@@ -1,0 +1,541 @@
+/* Configurações gerais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    color: #212529;
+    background-color: #f8f9fa;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+button,
+a {
+    font-family: inherit;
+    text-decoration: none;
+}
+
+.logoBlack img {
+    /* Rotaciona a cor do roxo para o azul corporativo e ajusta o brilho */
+    filter: hue-rotate(-70deg) brightness(0.9) saturate(1.2);
+}
+
+/* Cabeçalho */
+.cabecalho  {
+    min-height: 84px;
+    padding: 18px 7%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: white;
+    box-shadow: 0 2px 12px rgba(0, 64, 133, 0.1);
+}
+
+#login {
+    color: #004085;
+    font-weight: bold;
+}
+
+/* Menu principal */
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.menu>a,
+.btnSolucoes {
+    color: rgb(0, 0, 0);
+    background: none;
+    border: none;
+
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.menu>a:hover,
+.btnSolucoes:hover {
+    color: #007BFF;
+}
+
+/* APRESENTAÇÃO */
+.etiqueta {
+    display: inline-block;
+    margin-bottom: 14px;
+    padding: 7px 13px;
+
+    color: #004085;
+    background-color: rgba(0, 123, 255, 0.15);
+    border: 1px solid rgba(0, 123, 255, 0.35);
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.apresentacao {
+    padding: 55px 20px 110px;
+    display: flow;
+
+    color: white;
+    background: linear-gradient(135deg, #004085, #007BFF);
+
+    text-align: center;
+}
+
+.apresentacao h1 {
+    margin-bottom: 12px;
+    font-size: 40px;
+}
+
+.apresentacao p {
+    max-width: 620px;
+    margin: auto;
+
+    color: #e6f2ff;
+    font-size: 16px;
+    line-height: 1.6;
+    padding: 10px;
+}
+
+/* CONTEUDO PRINCIPAL */
+.conteudoPrincipal {
+    padding-bottom: 70px;
+}
+
+/* Cartão do formulário */
+.cartaoFormulario {
+    width: calc(100% - 40px);
+    max-width: 720px;
+
+    margin: -65px auto 0;
+    padding: 35px;
+
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 12px 35px rgba(0, 64, 133, 0.15);
+}
+
+.tituloFormulario {
+    margin-bottom: 30px;
+
+    display: flex;
+    align-items: center;
+    gap: 17px;
+}
+
+.iconeFormulario {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+
+    color: white;
+    background-color: #007BFF;
+    border-radius: 12px;
+
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.tituloFormulario h2 {
+    margin-bottom: 5px;
+
+    color: #004085;
+    font-size: 24px;
+}
+
+.tituloFormulario p {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* Formulário */
+
+
+.linhaCampos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 19px;
+}
+
+/* Grupo de campo */
+.grupoCampo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.grupoCampo label,
+.tentativaSolucao legend {
+    color: #343a40;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.opcional {
+    color: #6c757d;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+label {
+    color: #343a40;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px 14px;
+
+    color: #212529;
+    background-color: white;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+
+    outline: none;
+    transition: 0.3s;
+}
+
+textarea {
+    min-height: 125px;
+    resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.contador {
+    color: #6c757d;
+    font-size: 12px;
+    text-align: right;
+}
+
+/* Opção anônima */
+.opcaoAnonima {
+    padding: 15px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    background-color: #e6f2ff;
+    border: 1px solid #b8daff;
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+.opcaoAnonima input {
+    width: 18px;
+    height: 18px;
+
+    accent-color: #007BFF;
+}
+
+/* Aviso */
+.aviso {
+    padding: 14px;
+
+    color: #000000;
+    background-color: #cce5ff;
+    border-left: 4px solid #0056b3;
+    border-radius: 6px;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Botões SAMUELLL*/
+.btns {
+    margin-top: 5px;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
+
+.btnVoltar,
+.btnEnviar {
+    padding: 12px 22px;
+    border-radius: 8px;
+
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btnVoltar {
+    color: #495057;
+    background-color: transparent;
+    border: 1px solid #ced4da;
+}
+
+.btnVoltar:hover {
+    color: #0056b3;
+    border-color: #0056b3;
+}
+
+.btnEnviar {
+    color: white;
+    background-color: #28a745;
+    border: none;
+}
+
+.btnEnviar:hover {
+    background-color: #218838;
+}
+
+/* Campo de arquivo */
+input[type="file"] {
+    padding: 9px;
+    cursor: pointer;
+}
+
+input[type="file"]::file-selector-button {
+    margin-right: 12px;
+    padding: 9px 14px;
+
+    color: white;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 6px;
+
+    font-weight: bold;
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: #0056b3;
+}
+
+/* Reclamação anônima */
+.opcaoAnonima {
+    padding: 16px;
+
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    color: #212529;
+    background-color: #e6f2ff;
+    border: 1px solid #b8daff;
+    border-radius: 9px;
+
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.opcaoAnonima input {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+
+    accent-color: #007BFF;
+}   
+
+.linkDestaque {
+    padding: 14px 24px;
+
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+
+    color: white;
+    background-color: rgba(0, 86, 179, 0.9);
+    border-radius: 8px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    transition: transform 0.4s;
+}
+
+/* Cria a metade superior */
+.linkDestaque::before {
+    content: "";
+
+    width: 100%;
+    height: 50%;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+
+    background-color: #0056b3;
+    transition: transform 0.4s;
+}
+
+/* Cria a metade inferior */
+.linkDestaque::after {
+    content: "";
+
+    width: 100%;
+    height: 50%;
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    
+    background-color: #0056b3;
+    transition: transform 0.4s;
+}
+
+/* Mantém o texto na frente */
+.linkDestaque span {
+    position: relative;
+    z-index: 1;
+    color: white;
+}
+
+/* Animação quando o mouse entra */
+.linkDestaque:hover {
+    transform: translateY(-2px);
+}
+
+/* Metade superior vai para a direita */
+.linkDestaque:hover::before {
+    transform: translateX(100%);
+}
+
+/* Metade inferior vai para a esquerda */
+.linkDestaque:hover::after {
+    transform: translateX(-100%);
+}
+
+
+/* Rodapé */
+footer {
+    padding: 30px 7%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    color: #e6f2ff;
+    background-color: #002244;
+
+    font-size: 14px;
+}
+
+.rodapeLogo {
+    color: white;
+}
+
+.rodapeLogo .logoSimbolo {
+    width: 35px;
+    height: 35px;
+    font-size: 23px;
+}
+
+.rodapeLogo .logoexto {
+    font-size: 17px;
+}
+
+/* Adaptação para celulares */
+@media (max-width: 900px) {
+    .apresentacao {
+        grid-template-columns: 1fr;
+    }
+
+    .opcoes {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 650px) {
+    .cabecalho {
+        padding: 16px 5%;
+    }
+
+    .logoTexto {
+        font-size: 18px;
+    }
+
+    .menu {
+        position: absolute;
+        top: 78px;
+        left: 0;
+
+        width: 100%;
+        padding: 20px;
+
+        display: none;
+        flex-direction: column;
+
+        background-color: white;
+        box-shadow: 0 8px 15px rgba(0, 64, 133, 0.1);
+    }
+
+    .menu.aberto {
+        display: flex;
+    }
+
+    .btnMobile {
+        display: block;
+    }
+
+    .apresentacao {
+        padding: 60px 6%;
+    }
+
+    .conteudoApresentacao h1 {
+        font-size: 38px;
+    }
+
+    .opcoes {
+        grid-template-columns: 1fr;
+    }
+
+    .sobre {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .areaContinuar {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    footer {
+        flex-direction: column;
+        text-align: center;
+    }
+}

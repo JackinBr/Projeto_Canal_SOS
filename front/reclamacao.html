@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Enviar Reclamação - Lobios</title>
+    <link rel="icon" type="image/png" href="css/images/icon.jpg" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        .msgSucesso{
+            display: none;
+            padding: 45px 20px;
+            text-align: center;
+        }
+
+        #formulario{
+            display: block;
+        }
+
+        .confirmacao {
+        background-color: #f6f6f6;
+        border: 1px solid #ddd8df;
+      }
+
+      .confirmacao input {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+
+        accent-color: #0056b3; /* Azul Principal */
+      }
+
+
+      .confirmacao {
+        padding: 15px;
+
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+
+      /* Cabeçalhos das etapas */
+      .etapaFormulario {
+        margin-top: 5px;
+        padding: 16px 18px;
+
+        display: flex;
+        align-items: center;
+        gap: 13px;
+
+        background-color: #e6f2ff; /* Fundo azul claro */
+        border-left: 5px solid #0056b3; /* Borda azul principal */
+        border-radius: 9px;
+      }
+
+      .etapaFormulario > span {
+        width: 34px;
+        height: 34px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+
+        color: white;
+        background-color: #007BFF; /* Azul Médio para o círculo */
+        border-radius: 50%;
+
+        font-weight: bold;
+      }
+
+      .etapaFormulario div {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .etapaFormulario strong {
+        color: #004085; /* Azul escuro */
+        font-size: 16px;
+      }
+
+      .etapaFormulario small {
+        color: #6c757d; /* Cinza neutro */
+        font-size: 13px;
+      }
+
+      #formReclamacao {
+        display: flex;
+        flex-direction: column;
+        gap: 23px;
+      }
+
+      /* Tentativa de solução */
+      .tentativaSolucao {
+        padding: 18px;
+
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+
+        background-color: #f8f9fa; /* Cinza bem claro */
+        border: 1px solid #ced4da;
+        border-radius: 9px;
+      }
+
+      .tentativaSolucao legend {
+        padding: 0 7px;
+      }
+
+      .tentativaSolucao label {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+
+        color: #343a40;
+        font-size: 14px;
+        font-weight: bold;
+
+        cursor: pointer;
+      }
+
+      .tentativaSolucao input {
+        width: 17px;
+        height: 17px;
+
+        accent-color: #007BFF; /* Azul Médio para o radio button */
+        cursor: pointer;
+      }
+
+      /* Mensagem de sucesso */
+      .escondido {
+        display: none;
+      }
+
+      .mensagemSucesso {
+        padding: 45px 20px;
+        text-align: center;
+      }
+
+      .iconeSucesso {
+        width: 65px;
+        height: 65px;
+        margin: 0 auto 19px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: white;
+        background-color: #5da83b; /* Mantido verde para sucesso */
+        border-radius: 50%;
+
+        font-size: 32px;
+        font-weight: bold;
+      }
+
+      .mensagemSucesso h2 {
+        margin-bottom: 11px;
+
+        color: #004085; /* Azul escuro */
+        font-size: 27px;
+      }
+
+      .mensagemSucesso p {
+        margin-bottom: 12px;
+        color: #6c757d;
+      }
+
+      #numeroProtocolo {
+        margin-bottom: 26px;
+
+        display: block;
+
+        color: #ec8a2c; /* Mantido laranja para destaque */
+        font-size: 25px;
+      }
+
+      .mensagemSucesso a {
+        padding: 12px 21px;
+
+        display: inline-block;
+
+        color: white;
+        background-color: #0056b3; /* Azul Principal */
+        border-radius: 8px;
+
+        font-weight: bold;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="cabecalho">
+      <div class="headerLogo">
+        <a class="logoBlack" href="index.html"
+          ><img src="css/images/logo.png" alt=""
+        /></a>
+      </div>
+
+      <nav class="menu">
+        <a href="index.html"> Início </a>
+        <a href="index.html#manifestacao"> Manifestações</a>
+        <a href="index.html#sobre">Sobre</a>
+        <a href="login.html" id="login">Entre como administrador</a>
+      </nav>
+    </header>
+    <main class="conteudoPrincipal">
+      <section class="apresentacao">
+        <span class="etiqueta">Atendimento e resolução</span>
+
+        <h1>Registre sua reclamação</h1>
+
+        <p>
+          Informe um problema ocorrido na empresa para que a equipe responsável
+          possa analisar a situação e buscar uma solução.
+        </p>
+      </section>
+
+      <section class="cartaoFormulario">
+    <section id="formulario">
+        <div class="tituloFormulario">
+          <div class="iconeFormulario">!</div>
+
+          <div>
+            <h2>Qual problema aconteceu?</h2>
+
+            <p>Conte o ocorrido e informe como podemos ajudar.</p>
+          </div>
+        </div>
+
+        <form id="formReclamacao">
+          <div class="etapaFormulario">
+            <span>1</span>
+
+            <div>
+              <strong>Identificação do problema</strong>
+              <small>Informe onde e quando aconteceu.</small>
+            </div>
+          </div>
+
+          <div class="linhaCampos">
+            <div class="grupoCampo">
+              <label for="categoria">Categoria</label>
+
+              <select id="categoria" required>
+                <option value="">Selecione</option>
+                <option value="atendimento">Problema no atendimento</option>
+                <option value="sistema">Falha no sistema</option>
+                <option value="pagamento">Pagamento ou cobrança</option>
+                <option value="produto">Produto ou estoque</option>
+                <option value="ambiente">Ambiente de trabalho</option>
+                <option value="outro">Outro</option>
+              </select>
+            </div>
+
+            <div class="grupoCampo">
+              <label for="setor">Setor responsável</label>
+
+              <select id="setor" required>
+                <option value="">Selecione</option>
+                <option value="atendimento">Atendimento</option>
+                <option value="administrativo">Administrativo</option>
+                <option value="financeiro">Financeiro</option>
+                <option value="rh">Recursos Humanos</option>
+                <option value="tecnologia">Tecnologia</option>
+                <option value="estoque">Estoque</option>
+                <option value="loja">Loja</option>
+                <option value="outro">Outro</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="linhaCampos">
+            <div class="grupoCampo">
+              <label for="dataOcorrido"> Data do ocorrido </label>
+
+              <input type="date" id="dataOcorrido" onchange="Teste()" />
+            </div>
+
+            <div class="grupoCampo">
+              <label for="urgencia"> Nível de urgência </label>
+
+              <select id="urgencia" required>
+                <option value="">Selecione</option>
+                <option value="baixa">Baixa</option>
+                <option value="media">Média</option>
+                <option value="alta">Alta</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="etapaFormulario">
+            <span>2</span>
+
+            <div>
+              <strong>Detalhes da reclamação</strong>
+              <small>Explique claramente o problema.</small>
+            </div>
+          </div>
+
+          <div class="grupoCampo">
+            <label for="assunto"> Resuma sua reclamação </label>
+
+            <input
+              type="text"
+              id="assunto"
+              maxlength="80"
+              placeholder="Ex.: Sistema indisponível durante o atendimento"
+              required
+            />
+          </div>
+
+          <div class="grupoCampo">
+            <label for="descricao"> O que aconteceu? </label>
+
+            <textarea
+              id="descricao"
+              maxlength="800"
+              placeholder="Descreva o problema, as pessoas envolvidas e como ele afetou seu trabalho..."
+              required
+              oninput="contadorDescricao()"
+            ></textarea>
+
+            <div class="contador">
+              <span id="contadorDescricao">0</span>/800
+            </div>
+          </div>
+
+          <fieldset class="tentativaSolucao">
+            <legend>Você já tentou resolver esse problema?</legend>
+
+            <label>
+              <input type="radio" name="tentou-resolver" value="Sim" />
+              Sim
+            </label>
+
+            <label>
+              <input type="radio" name="tentou-resolver" value="Não" />
+              Não
+            </label>
+          </fieldset>
+
+          <div class="grupoCampo">
+            <label for="solucaoEsperada"> Qual solução você espera? </label>
+
+            <textarea
+              id="solucao"
+              maxlength="400"
+              placeholder="Explique o que poderia ser feito para resolver o problema..."
+              oninput="contadorSolucao()"
+            ></textarea>
+
+            <div class="contador"><span id="contadorSolucao">0</span>/400</div>
+          </div>
+
+          <label class="confirmacao">
+            <input type="checkbox" id="campoNome" onclick="semNome()"  />
+
+            <span> Quero enviar esta reclamação de forma anônima </span>
+          </label>
+
+          <div class="grupoCampo" id="campoNome">
+            <label for="nome">
+              Seu nome
+              <span class="opcional">(opcional)</span>
+            </label>
+
+            <input type="text" id="nome" placeholder="Digite seu nome" />
+          </div>
+
+          <div class="aviso">
+            <strong>Importante:</strong>
+
+            forneça informações claras para facilitar a análise e a solução do
+            problema.
+          </div>
+
+          <div class="btns">
+            <a href="index.html" class="btnVoltar"> Cancelar </a>
+
+            <button type="submit" class="linkDestaque">
+              <span>Enviar reclamação </span>
+            </button>
+          </div>
+        </form>
+      </section>
+      <section>
+        <div class="msgSucesso" id="msgSucesso">
+          <div class="iconeSucesso">✓</div>
+
+          <h2>Reclamação registrada!</h2>
+
+          <p>Guarde o protocolo para acompanhar o atendimento:</p>
+
+          <strong id="numeroProtocolo"></strong>
+
+          <a href="index.html"> Voltar para o início </a>
+        </div>
+    </section>
+
+    </main>
+
+    <footer>
+      <p>© 2026 Lobios</p>
+      <span>Canal interno de manifestações</span>
+    </footer>
+
+    <script src="javaScript/reclamacao.js"></script>
+    <script src="javaScript/script.js"></script>
+  </body>
+</html>

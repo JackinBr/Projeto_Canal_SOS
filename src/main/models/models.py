@@ -1,54 +1,56 @@
-import uuid
-from sqlalchemy import Column, String, Date, DateTime, Numeric, Text, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
-from src.main.server.server import Base  # Correto!  # Importa a Base declarativa do seu server.py
+from sqlalchemy import Column, Integer, String, DateTime, text
+from src.main.server.server import Base
 
-class Setor(Base):
-    __tablename__ = "setores"
+class UsuarioDB(Base):
+    __tablename__ = "usuario"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    nome = Column(Text, nullable=False)
-    responsavel_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nome = Column(String(50), nullable=False)
+    email = Column(String(100), unique=True, nullable=False)
+    senha = Column(String(100), nullable=False)
 
-class Cargos(Base):
-    __tablename__ = "cargos"
+class CriticaDB(Base):
+    __tablename__ = "critica"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    cargo = Column(Text, nullable=False)
-    setor_id = Column(UUID(as_uuid=True), ForeignKey("setores.id"), nullable=False)
-    nivel = Column(Text)  # junior, pleno, senior
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    setor = Column(String(20))
+    data = Column(DateTime, server_default=text("CURRENT_TIMESTAMP"))
+    assunto = Column(String(100))
+    descricao = Column(String(700))
+    sugestao = Column(String(400))
+    nome = Column(String(50), nullable=True) # Pode ser nulo para garantir anonimato
 
-class UserDB(Base):
-    __tablename__ = "usuarios"
+class DenunciaDB(Base):
+    __tablename__ = "denuncia"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    nome = Column(Text, nullable=False)
-    email = Column(Text, unique=True, nullable=False)
-    senha = Column(Text, nullable=False)
-    tipo_perfil = Column(Text)  # colaborador, gestor, rh
-    cargo_id = Column(UUID(as_uuid=True), ForeignKey("cargos.id"), nullable=True)
-    setor_id = Column(UUID(as_uuid=True), ForeignKey("setores.id"), nullable=True)
-    gestor_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=True)
-    data_admissao = Column(Date)
-    criado_em = Column(DateTime)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    tipo_denuncia = Column(String(30))
+    setor = Column(String(20))
+    data = Column(DateTime, server_default=text("CURRENT_TIMESTAMP"))
+    local = Column(String(30))
+    pessoas_envolvidas = Column(String(200)) # Corrigido typo pessoa_envolvidas
+    descricao = Column(String(800))
+    testemunhas = Column(String(400))
+    nome = Column(String(50), nullable=True)
+    email = Column(String(50), nullable=True)
 
-class Meta(Base):
-    __tablename__ = "metas"
+class ReclamacaoDB(Base):
+    __tablename__ = "reclamacao"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    usuario_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=False)
-    titulo = Column(Text, nullable=False)
-    descricao = Column(Text)
-    prazo = Column(Date)
-    status = Column(Text)  # em_andamento, concluida, atrasada
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    categoria = Column(String(25))
+    setor = Column(String(20))
+    data = Column(DateTime, server_default=text("CURRENT_TIMESTAMP"))
+    nivel_urgencia = Column(String(5))
+    resumo_reclamacao = Column(String(100))
+    descricao = Column(String(800))
+    tentou_resolver = Column(String(3))
+    sugestao = Column(String(400))
+    nome = Column(String(50), nullable=True)
 
-class Ferias(Base):
-    __tablename__ = "ferias"
+class AdministradorDB(Base):
+    __tablename__ = "administrador"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    usuario_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=False)
-    data_inicio = Column(Date)
-    data_fim = Column(Date)
-    status = Column(Text)  # solicitado, aprovado, negado
-    aprovador_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    email = Column(String(100), unique=True, nullable=False)
+    senha_hash = Column(String(100), nullable=False)

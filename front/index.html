@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> Lobios </title>
+    <link rel="icon" type="image/png" href="css/images/icon.jpg.jpeg">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* Apresentação principal */
+        .logoBlack img {
+            /* Rotaciona a cor do roxo para o azul corporativo e ajusta o brilho */
+            filter: hue-rotate(-70deg) brightness(0.9) saturate(1.2);
+        }
+        .apresentacaoIndex {
+            padding: 80px 8%;
+
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            align-items: center;
+            gap: 70px;
+
+            background-image: url("css/images/background.jpg.jpeg");
+            background-size: cover;
+        }
+
+        .conteudoApresentacao {
+            max-width: 680px;
+        }
+
+
+        .conteudoApresentacao h1 {
+            max-width: 650px;
+            margin-bottom: 22px;
+
+            color: #0056b3; /* Azul Principal */
+            font-size: 52px;
+            line-height: 1.1;
+        }
+
+        .conteudoApresentacao p {
+            max-width: 610px;
+            margin-bottom: 32px;
+
+            color: white;
+            font-size: 18px;
+            line-height: 1.9;
+        }
+
+        .btnPrincipal {
+            padding: 14px 24px;
+
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+
+            color: white;
+            background-color: rgba(0, 86, 179, 0.9); /* Azul transparente */
+            border-radius: 8px;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            transition: transform 0.4s;
+        }
+
+        /* Cria a metade superior */
+        .btnPrincipal::before {
+            content: "";
+
+            width: 100%;
+            height: 50%;
+
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+
+            background-color: #0056b3; /* Azul Sólido */
+            transition: transform 0.4s;
+        }
+
+        /* Cria a metade inferior */
+        .btnPrincipal::after {
+            content: "";
+
+            width: 100%;
+            height: 50%;
+
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            z-index: 0;
+
+            background-color: #0056b3; /* Azul Sólido */
+            transition: transform 0.4s;
+        }
+
+        /* Mantém o texto na frente */
+        .btnPrincipal span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Animação quando o mouse entra */
+        .btnPrincipal:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Metade superior vai para a direita */
+        .btnPrincipal:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* Metade inferior vai para a esquerda */
+        .btnPrincipal:hover::after {
+            transform: translateX(-100%);
+        }
+
+        /* Painel de segurança */
+        .painelSeguranca {
+            padding: 34px;
+            opacity: 0.85;
+            color: #33283c;
+            background-color: white;
+            border-radius: 18px;
+            box-shadow: 0 18px 45px rgba(29, 12, 39, 0.25);
+        }
+
+        .iconeSeguranca {
+            width: 55px;
+            height: 55px;
+            margin-bottom: 20px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            color: white;
+            background-color: #0056b3; /* Azul Principal */
+            border-radius: 50%;
+
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .painelSeguranca h2 {
+            margin-bottom: 12px;
+            color: black;
+            font-size: 24px;
+        }
+
+        .painelSeguranca p {
+            margin-bottom: 20px;
+            color: black;
+            line-height: 1.5;
+        }
+
+        .painelseguranca ul {
+            list-style: none;
+        }
+
+        .painelseguranca li {
+            margin-top: 12px;
+            color: black;
+        }
+
+        .painelseguranca li::before {
+            content: "✓";
+            margin-right: 9px;
+            color: #0056b3; /* Azul Principal */
+            font-weight: bold;
+        }
+
+        /* Área de manifestações */
+        .manifestacao {
+            padding: 80px 8%;
+        }
+
+        .tituloSecao {
+            margin-bottom: 38px;
+            text-align: center;
+        }
+
+        .tituloSecao span,
+        .sobre span {
+            color: black;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tituloSecao h2 {
+            margin: 10px 0;
+            color: #004085; /* Azul Escuro */
+            font-size: 36px;
+        }
+
+        .tituloSecao p {
+            color: black;
+        }
+
+        .opcoes {
+            max-width: 1100px;
+            margin:auto;
+
+            display: grid;
+            grid-template-columns: repeat(3, 5fr);
+            gap: 30px;
+        }
+
+        .cartaoOpcao {
+            min-height: 230px;
+            padding: 25px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 13px;
+
+            color: #33283c;
+            background-color: white;
+            border: 2px solid transparent;
+            border-radius: 14px;
+            box-shadow: 0 5px 18px rgba(61, 31, 79, 0.08);
+
+            text-align: left;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .cartaoOpcao:hover {
+            border-color: #004085; /* Azul Escuro */
+            transform: translateY(-5px);
+        }
+
+        .cartaoOpcao.selecionado {
+            background-color: #e6f2ff; /* Azul bem claro */
+            border-color: #007BFF; /* Azul Médio */
+        }
+
+        .iconeOpcao {
+            width: 45px;
+            height: 45px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            color: white;
+            background-color: #007BFF; /* Azul Médio */
+            border-radius: 10px;
+
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .cartaoOpcao strong {
+            color: #004085; /* Azul Escuro */
+            font-size: 19px;
+        }
+
+        .cartaoOpcao small {
+            color: black;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Sobre o canal */
+        .sobre {
+            padding: 60px 10%;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 60px;
+
+            background-color: white;
+        }
+
+        .sobre h2 {
+            margin-top: 10px;
+            color: #004085; /* Azul Escuro */
+            font-size: 32px;
+        }
+
+        .sobre p {
+            color: black;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="cabecalho">
+        <div class="headerLogo">
+            <a class="logoBlack" href="index.html"><img src="css/images/logo.png" alt=""></a>
+        </div>
+
+        <nav class="menu">
+            <a href="index.html"> Início </a>
+            <a href="index.html#manifestacao"> Manifestações </a>
+            <a href="index.html#sobre">Sobre</a>
+            <a href="login.html" id="login">Entre como administrador</a>
+        </nav>
+    </header>
+    <main>
+
+        <section class="apresentacaoIndex">
+            <div class="conteudoApresentacao">
+
+
+                <h1>
+                    Sua voz ajuda a construir uma empresa melhor.
+                </h1>
+
+                <p>
+                    Este espaço foi criado para que funcionários da Lobios
+                    possam registrar reclamações, elogios, críticas ou
+                    denúncias de maneira simples e segura.
+                </p>
+
+                <a href="#manifestacao" class="btnPrincipal">
+                    <span> Registrar manifestação </span>
+                </a>
+            </div>
+
+            <div class="painelSeguranca">
+                <div class="iconeSeguranca">✓</div>
+
+                <h2>Canal seguro e confidencial</h2>
+
+                <p>
+                    Sua manifestação será encaminhada para análise da equipe
+                    responsável.
+                </p>
+
+                <ul>
+                    <li>Atendimento confidencial</li>
+                    <li>Registro rápido e organizado</li>
+                    <li>Acompanhamento por protocolo</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="manifestacao" id="manifestacao">
+            <div class="tituloSecao">
+                <span> <strong>Escolha uma opção</strong></span>
+
+                <h2>Como podemos ajudar?</h2>
+
+                <p>
+                    <strong> Selecione o tipo de manifestação que deseja registrar. </strong>
+                </p>
+            </div>
+
+            <div class="opcoes">
+                <a class="reclamacao" href="reclamacao.html">
+                    <button type="button" class="cartaoOpcao" data-tipo="Reclamação">
+                        <span class="iconeOpcao">!</span>
+                        <strong>Reclamação</strong>
+                        <small>
+                            Informe um problema ou situação que precisa ser resolvida.
+                        </small>
+                    </button>
+                </a>
+
+
+                <a class="critica" href="critica.html">
+                    <button type="button" class="cartaoOpcao" data-tipo="Crítica">
+                        <span class="iconeOpcao">✎</span>
+                        <strong>Crítica</strong>
+                        <small>
+                            Compartilhe sua opinião e ajude a melhorar nossos processos.
+                        </small>
+                    </button>
+                </a>
+
+                <a class="denuncia" href="denuncia.html">
+                    <button type="button" class="cartaoOpcao" data-tipo="Denúncia">
+                        <span class="iconeOpcao">⚠</span>
+                        <strong>Denúncia</strong>
+                        <small>
+                            Relate uma conduta inadequada ou situação irregular.
+                        </small>
+                    </button>
+                </a>
+            </div>
+
+        </section>
+
+        <section class="sobre" id="sobre">
+            <div>
+                <span>Nosso compromisso</span>
+
+                <h2>Toda manifestação é importante</h2>
+            </div>
+
+            <p>
+                A Lobios valoriza o diálogo, o respeito e a
+                transparência. As informações enviadas serão utilizadas para
+                identificar melhorias e proporcionar um ambiente profissional
+                mais seguro e acolhedor.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="rodapeLogo">
+            <span class="logoSimbolo">+</span>
+
+            <span class="logoTexto">
+                <strong>Lobios</strong>
+            </span>
+        </div>
+
+        <p>Canal interno de manifestações</p>
+
+        <span>© 2026 Lobios</span>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

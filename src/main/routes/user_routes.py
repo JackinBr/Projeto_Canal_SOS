@@ -1,105 +1,198 @@
-from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from typing import List
 
-
-from src.main.validators.user_register_validator import UserRegisterValidator,UserResponse,UserUpdateValidator,UserLoginValidator
+# Importações do seu servidor e banco de dados
 from src.main.server import server
-from src.main.models.models import UserDB
+from src.main.models.models import CriticaDB, DenunciaDB, ReclamacaoDB, AdministradorDB,UsuarioDB
 
-users_routes = APIRouter(tags=["Usuario"])
+# Importações dos validadores novos (certifique-se de que o ficheiro validators.py tem estas classes)
+from src.main.validators.user_register_validator import (
+    CriticaCreateValidator, 
+    DenunciaCreateValidator, 
+    ReclamacaoCreateValidator,
+    UserLoginValidator,
+    UsuarioCreateValidator 
+)
 
-# [C]REATE - Criar e salvar novo usuário
-@users_routes.post("/users", status_code=status.HTTP_201_CREATED, response_model=UserResponse)
-def create_user(body: UserRegisterValidator, db: Session = Depends(server.get_db)):
-    # 1. Verifica se o e-mail já existe no banco
-    existing_user = db.query(UserDB).filter(UserDB.email == body.email).first()
-    if existing_user:
-        raise HTTPException(status_code=400, detail="E-mail já cadastrado.")
+canal_routes = APIRouter(tags=["Canal Anonimo"])
+
+# ==========================================
+# ROTAS DO USUÁRIO COMUM (CADASTRO E LOGIN)
+# ==========================================
+
+@canal_routes.post("/usuarios", status_code=status.HTTP_201_CREATED)
+def criar_usuario(body: UsuarioCreateValidator, db: Session = Depends(server.get_db)):
+    # 1. Verifica se o e-mail já existe
+    usuario_existente = db.query(UsuarioDB).filter(UsuarioDB.email == body.email).first()
+    if usuario_existente:
+        raise HTTPException(status_code=400, detail="E-mail já cadastrado no sistema.")
     
-    # 2. Cria a instância do modelo do banco usando os dados validados pelo Pydantic
-    new_user = UserDB(**body.model_dump())
-    
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    
-    return new_user
-
-@users_routes.post("/login", response_model=UserResponse)
-def login_user(body: UserLoginValidator, db: Session = Depends(server.get_db)):
-    # 1. Procura o utilizador pelo e-mail
-    user_db = db.query(UserDB).filter(UserDB.email == body.email).first()
-
-    # 2. Verifica se o utilizador existe e se a senha está correta
-    if not user_db or user_db.senha != body.senha:
-        # Retorna Erro 401 (Unauthorized) se falhar
-        raise HTTPException(status_code=401, detail="E-mail ou senha incorretos.")
-
-    # 3. Se passou no IF acima, o login está certo! 
-    # Retorna o objeto inteiro e o FastAPI formata usando o UserResponse
-    return user_db
-
-# [R]EAD - Listar usuários com paginação
-@users_routes.get("/users/", response_model=List[UserResponse])
-def read_users(skip: int = 0, limit: int = 10, db: Session = Depends(server.get_db)):
-    users = db.query(UserDB).offset(skip).limit(limit).all()
-    return users
-
-# [R]EAD - Buscar um usuário específico por ID (Ajustado para str/uuid)
-@users_routes.get("/users/{user_id}", response_model=UserResponse)
-def read_user(user_id: str, db: Session = Depends(server.get_db)):
-    user = db.query(UserDB).filter(UserDB.id == user_id).first()
-    if user is None:
-        raise HTTPException(status_code=404, detail="Usuário não encontrado.")
-    return user
-
-# [U]PDATE - Atualizar um usuário
-@users_routes.put("/users/{user_id}", response_model=UserResponse)
-def update_user(user_id: str, user_atualizado: UserUpdateValidator, db: Session = Depends(server.get_db)):
-    user_db = db.query(UserDB).filter(UserDB.id == user_id).first()
-    if user_db is None:
-        raise HTTPException(status_code=404, detail="Usuário não encontrado.")
-    if user_atualizado.nome is not None:
-        user_db.nome = user_atualizado.nome
-        
-    if user_atualizado.email is not None:
-        user_db.email = user_atualizado.email
-        
-    if user_atualizado.username is not None:
-        user_db.username = user_atualizado.username
-        
-    if user_atualizado.cargo is not None:
-        user_db.cargo = user_atualizado.cargo
-        
-    if user_atualizado.tipo_perfil is not None:
-        user_db.tipo_perfil = user_atualizado.tipo_perfil
-        
-    if user_atualizado.cargo_id is not None:
-        user_db.cargo_id = user_atualizado.cargo_id
-        
-    if user_atualizado.setor_id is not None:
-        user_db.setor_id = user_atualizado.setor_id
-        
-    if user_atualizado.gestor_id is not None:
-        user_db.gestor_id = user_atualizado.gestor_id
+    # 2. Cria o novo usuário
+    novo_usuario = UsuarioDB(**body.model_dump())
     
     try:
+        db.add(novo_usuario)
         db.commit()
-        db.refresh(user_db)
+        return {"mensagem": "Conta criada com sucesso!"}
     except Exception as e:
-        db.rollback() # Desfaz a operação em caso de erro no banco
-        raise HTTPException(status_code=500, detail=f"Erro ao guardar: {str(e)}")
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Erro ao criar conta: {str(e)}")
 
-    return user_db
+@canal_routes.post("/login/usuario", status_code=status.HTTP_200_OK)
+def login_usuario(body: UserLoginValidator, db: Session = Depends(server.get_db)):
+    # Busca o usuário comum pelo e-mail
+    usuario = db.query(UsuarioDB).filter(UsuarioDB.email == body.email).first()
 
-# [D]ELETE - Deletar um usuário (Corrigido o status__code para status_code)
-@users_routes.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_user(user_id: str, db: Session = Depends(server.get_db)):
-    UserDB = db.query(UserDB).filter(UserDB.id == user_id).first()
-    if UserDB is None:
+    # Verifica se existe e se a senha bate
+    if not usuario or usuario.senha != body.senha:
+        raise HTTPException(status_code=401, detail="E-mail ou senha incorretos.")
+
+    # Retorna os dados para o Angular preencher o formulário automaticamente
+    return {
+        "mensagem": "Login aprovado", 
+        "usuario": {
+            "id": usuario.id,
+            "nome": usuario.nome,
+            "email": usuario.email
+        }
+    }
+
+@canal_routes.delete("/usuarios/{usuario_id}", status_code=status.HTTP_204_NO_CONTENT)
+def deletar_usuario(usuario_id: int, db: Session = Depends(server.get_db)):
+    # 1. Procura o utilizador pelo ID numérico
+    usuario_db = db.query(UsuarioDB).filter(UsuarioDB.id == usuario_id).first()
+    
+    # 2. Se não existir, devolve erro 404
+    if not usuario_db:
         raise HTTPException(status_code=404, detail="Usuário não encontrado.")
     
-    db.delete(UserDB)
-    db.commit()
-    return None
+    # 3. Executa a exclusão no banco de dados
+    try:
+        db.delete(usuario_db)
+        db.commit()
+        return None # O status 204 (No Content) por padrão não devolve JSON
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Erro ao deletar usuário: {str(e)}")
+    
+@canal_routes.post("/criticas", status_code=status.HTTP_201_CREATED)
+def criar_critica(body: CriticaCreateValidator, db: Session = Depends(server.get_db)):
+    try:
+        nova_critica = CriticaDB(**body.model_dump(exclude_none=True))
+        db.add(nova_critica)
+        db.commit()
+        return {"mensagem": "Crítica registada com sucesso."}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Erro ao registar: {str(e)}")
+
+
+@canal_routes.post("/denuncias", status_code=status.HTTP_201_CREATED)
+def criar_denuncia(body: DenunciaCreateValidator, db: Session = Depends(server.get_db)):
+    try:
+        nova_denuncia = DenunciaDB(**body.model_dump(exclude_none=True))
+        db.add(nova_denuncia)
+        db.commit()
+        return {"mensagem": "Denúncia registada de forma segura."}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Erro ao registar: {str(e)}")
+
+
+@canal_routes.post("/reclamacoes", status_code=status.HTTP_201_CREATED)
+def criar_reclamacao(body: ReclamacaoCreateValidator, db: Session = Depends(server.get_db)):
+    try:
+        nova_reclamacao = ReclamacaoDB(**body.model_dump(exclude_none=True))
+        db.add(nova_reclamacao)
+        db.commit()
+        return {"mensagem": "Reclamação registada com sucesso."}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Erro ao registar: {str(e)}")
+
+# ==========================================
+# ROTAS ADMINISTRATIVAS
+# ==========================================
+
+@canal_routes.post("/login", status_code=status.HTTP_200_OK)
+def login_admin(body: UserLoginValidator, db: Session = Depends(server.get_db)):
+    # 1. Procura o administrador na nova tabela
+    admin_db = db.query(AdministradorDB).filter(AdministradorDB.email == body.email).first()
+
+    # 2. Verifica credenciais (usando senha_hash conforme a sua tabela)
+    if not admin_db or admin_db.senha_hash != body.senha:
+        raise HTTPException(status_code=401, detail="E-mail ou senha incorretos.")
+
+    return {"mensagem": "Login aprovado", "admin_id": admin_db.id}
+
+@canal_routes.get("/denuncias", status_code=status.HTTP_200_OK)
+def listar_denuncias(db: Session = Depends(server.get_db)):
+    # Rota para o painel do front-end puxar todas as denúncias
+    denuncias = db.query(DenunciaDB).all()
+    return denuncias
+
+@canal_routes.get("/manifestacoes", status_code=status.HTTP_200_OK)
+
+def listar_manifestacoes(db: Session = Depends(server.get_db)):
+    try:
+        # 1. Buscar dados das 3 tabelas
+        criticas = db.query(CriticaDB).all()
+        denuncias = db.query(DenunciaDB).all()
+        reclamacoes = db.query(ReclamacaoDB).all()
+
+        manifestacoes = []
+
+        # 2. Mapear e formatar as Críticas
+        for c in criticas:
+            manifestacoes.append({
+                "protocolo": f"CRI-{c.id}",
+                "tipo": "Crítica",
+                "assunto": c.assunto,
+                "data": c.data,
+                "setor": c.setor,
+                "autor": c.nome if c.nome else "Anônimo",
+                "anonimo": not bool(c.nome),
+                "descricao": c.descricao,
+                "complemento": c.sugestao if c.sugestao else "Não informado",
+                "anexo": "Não informado"
+            })
+
+        # 3. Mapear e formatar as Denúncias
+        for d in denuncias:
+            manifestacoes.append({
+                "protocolo": f"DEN-{d.id}",
+                "tipo": "Denúncia",
+                "assunto": d.tipo_denuncia,
+                "data": d.data,
+                "setor": d.setor,
+                "autor": d.nome if d.nome else "Anônimo",
+                "anonimo": not bool(d.nome),
+                "descricao": d.descricao,
+                "complemento": d.testemunhas if d.testemunhas else "Não informado",
+                "anexo": "Não informado"
+            })
+
+        # 4. Mapear e formatar as Reclamações
+        for r in reclamacoes:
+            manifestacoes.append({
+                "protocolo": f"REC-{r.id}",
+                "tipo": "Reclamação",
+                "assunto": r.resumo_reclamacao,
+                "data": r.data,
+                "setor": r.setor,
+                "autor": r.nome if r.nome else "Anônimo",
+                "anonimo": not bool(r.nome),
+                "descricao": r.descricao,
+                "complemento": r.sugestao if r.sugestao else "Não informado",
+                "anexo": "Não informado"
+            })
+
+        # 5. Ordenar por data (Decrescente: do mais recente para o mais antigo)
+        # O FastAPI converte automaticamente os objetos datetime para texto ISO no JSON de saída
+        manifestacoes.sort(key=lambda x: x["data"], reverse=True)
+
+        return manifestacoes
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao buscar manifestações: {str(e)}")

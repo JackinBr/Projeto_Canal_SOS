@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Chamadas - Lobios</title>
+
+    <!-- CSS compartilhado por todas as páginas -->
+    <link rel="stylesheet" href="./css/style.css">
+
+    <!-- CSS exclusivo da página Chamadas -->
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cabecalhoChamadas {
+            gap: 30px;
+        }
+
+        .ladoEsquerdoCabecalho {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .logoChamadas img {
+            width: 170px;
+            display: block;
+        }
+
+        .divisorCabecalho {
+            width: 1px;
+            height: 40px;
+            background-color: #d8cedd;
+        }
+
+        .tituloPainel {
+            color: #33283c;
+            font-size: 18px;
+            white-space: nowrap;
+        }
+
+        .acoesCabecalho {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btnTelaInicial,
+        .btnSair {
+            padding: 10px 16px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btnTelaInicial {
+            color: #743b8f;
+            background-color: #f4ecf7;
+            border: 1px solid #ddcce5;
+        }
+
+        .btnTelaInicial:hover {
+            color: white;
+            background-color: #743b8f;
+        }
+
+        .btnSair {
+            color: #743b8f;
+            background-color: white;
+            border: 1px solid #743b8f;
+        }
+
+        .btnSair:hover {
+            color: white;
+            background-color: #743b8f;
+        }
+
+        .apresentacaoChamadas {
+            padding: 38px 7%;
+            color: white;
+            background:
+                radial-gradient(circle at 88% 20%, rgba(177, 86, 207, 0.32), transparent 28%),
+                linear-gradient(135deg, #37164b, #74328c);
+        }
+
+        .apresentacaoChamadas h1 {
+            margin-bottom: 8px;
+            font-size: 34px;
+        }
+
+        .apresentacaoChamadas p {
+            color: #eee5f2;
+            font-size: 15px;
+        }
+
+        .conteudoChamadas {
+            width: 100%;
+            max-width: 1500px;
+            margin: auto;
+            padding: 28px 5% 70px;
+        }
+
+        .resumoChamadas {
+            margin-bottom: 25px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .cartaoResumo {
+            padding: 21px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background-color: white;
+            border: 1px solid #eee8f0;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(58, 26, 76, 0.08);
+        }
+
+        .iconeResumo {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            color: #743b8f;
+            background-color: #f3e8f8;
+            border-radius: 12px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .cartaoResumo.denuncias .iconeResumo {
+            color: #bd3043;
+            background-color: #fdebed;
+        }
+
+        .cartaoResumo span {
+            display: block;
+            color: #716676;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .cartaoResumo strong {
+            display: block;
+            margin-top: 3px;
+            color: #54266d;
+            font-size: 29px;
+        }
+
+        .painelRegistros {
+            padding: 22px;
+            background-color: white;
+            border: 1px solid #eee8f0;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(58, 26, 76, 0.09);
+        }
+
+        .ferramentasChamadas {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .campoPesquisa {
+            max-width: 530px;
+            flex: 1;
+            position: relative;
+        }
+
+        .campoPesquisa span {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            color: #743b8f;
+            transform: translateY(-50%);
+        }
+
+        .campoPesquisa input {
+            padding-left: 43px;
+        }
+
+        .filtrosChamadas {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .btnFiltro {
+            padding: 10px 15px;
+            color: #743b8f;
+            background-color: white;
+            border: 1px solid #dacbe1;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .btnFiltro:hover,
+        .btnFiltro.ativo {
+            color: white;
+            background-color: #743b8f;
+            border-color: #743b8f;
+        }
+
+        .tabelaResponsiva {
+            overflow-x: auto;
+        }
+
+        .tabelaChamadas {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        .tabelaChamadas th,
+        .tabelaChamadas td {
+            padding: 14px 13px;
+            border-bottom: 1px solid #eee8f0;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .tabelaChamadas th {
+            color: #514456;
+            background-color: #f6f3f8;
+            font-size: 13px;
+        }
+
+        .tabelaChamadas td {
+            color: #554a5a;
+            font-size: 13px;
+        }
+
+        .tabelaChamadas tbody tr:hover {
+            background-color: #fcf9fd;
+        }
+
+        .etiquetaTipo {
+            padding: 6px 10px;
+            display: inline-block;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .tipoReclamacao {
+            color: #6c2786;
+            background-color: #f0e2f6;
+        }
+
+        .tipoDenuncia {
+            color: #b72b3f;
+            background-color: #fde8eb;
+        }
+
+        .tipoCritica {
+            color: #87590b;
+            background-color: #fff2d9;
+        }
+
+        .anonimoSim {
+            color: #8a3542;
+            font-weight: bold;
+        }
+
+        .btnDetalhes {
+            padding: 8px 13px;
+            color: #743b8f;
+            background-color: white;
+            border: 1px solid #743b8f;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .btnDetalhes:hover {
+            color: white;
+            background-color: #743b8f;
+        }
+
+        .estadoVazio {
+            padding: 45px 20px;
+            display: none;
+            color: #807484;
+            text-align: center;
+        }
+
+        .rodapeTabela {
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .textoRegistros {
+            color: #786d7d;
+            font-size: 13px;
+        }
+
+        .paginacao {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .btnPagina {
+            width: 36px;
+            height: 36px;
+            color: #5d5062;
+            background-color: white;
+            border: 1px solid #ded5e2;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .btnPagina:hover,
+        .btnPagina.ativa {
+            color: white;
+            background-color: #743b8f;
+            border-color: #743b8f;
+        }
+
+        .btnPagina:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .fundoModal {
+            padding: 20px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background-color: rgba(28, 12, 36, 0.68);
+        }
+
+        .fundoModal.aberto {
+            display: flex;
+        }
+
+        .modalDetalhes {
+            width: 100%;
+            max-width: 720px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(21, 7, 29, 0.3);
+        }
+
+        .topoModal {
+            padding: 21px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            background: linear-gradient(135deg, #44205c, #783c91);
+            border-radius: 16px 16px 0 0;
+        }
+
+        .topoModal h2 {
+            font-size: 21px;
+        }
+
+        .fecharModal {
+            width: 34px;
+            height: 34px;
+            color: white;
+            background-color: rgba(255, 255, 255, 0.15);
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .conteudoModal {
+            padding: 25px;
+        }
+
+        .resumoModal {
+            margin-bottom: 22px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 13px;
+        }
+
+        .informacaoModal {
+            padding: 13px;
+            background-color: #f7f3f9;
+            border-radius: 8px;
+        }
+
+        .informacaoModal small,
+        .blocoModal small {
+            display: block;
+            margin-bottom: 5px;
+            color: #8a7f8e;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .informacaoModal strong {
+            color: #4c3f51;
+            font-size: 14px;
+        }
+
+        .blocoModal {
+            margin-top: 16px;
+        }
+
+        .blocoModal p {
+            padding: 14px;
+            color: #574c5c;
+            background-color: #faf8fb;
+            border: 1px solid #ece5ef;
+            border-radius: 8px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .acoesModal {
+            margin-top: 24px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btnFecharDetalhes {
+            padding: 11px 21px;
+            color: white;
+            background-color: #743b8f;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        footer {
+            margin-top: auto;
+        }
+
+        @media (max-width: 1000px) {
+            .resumoChamadas {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .ferramentasChamadas {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .campoPesquisa {
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 750px) {
+            .cabecalhoChamadas,
+            .ladoEsquerdoCabecalho {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .cabecalhoChamadas {
+                padding: 16px 5%;
+            }
+
+            .ladoEsquerdoCabecalho {
+                width: 100%;
+                gap: 12px;
+            }
+
+            .divisorCabecalho {
+                display: none;
+            }
+
+            .acoesCabecalho {
+                width: 100%;
+            }
+
+            .btnTelaInicial,
+            .btnSair {
+                flex: 1;
+                text-align: center;
+            }
+
+            .apresentacaoChamadas {
+                padding: 32px 5%;
+            }
+
+            .apresentacaoChamadas h1 {
+                font-size: 28px;
+            }
+
+            .filtrosChamadas {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .rodapeTabela {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .resumoModal {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .resumoChamadas {
+                grid-template-columns: 1fr;
+            }
+
+            .painelRegistros {
+                padding: 15px;
+            }
+
+            .logoChamadas img {
+                width: 145px;
+            }
+        }
+    </style>
+
+    <!-- JavaScript exclusivo da página Chamadas -->
+</head>
+
+<body>
+
+    <header class="cabecalho cabecalhoChamadas">
+
+        <div class="ladoEsquerdoCabecalho">
+            <a href="index.html" class="logoChamadas"> <img src="css/images/logo.png" alt="Logo da Lobios"> </a>
+            <span class="divisorCabecalho"></span>
+            <strong class="tituloPainel">Painel Administrativo</strong>
+        </div>
+
+        <div class="acoesCabecalho">
+            <a href="index.html" class="btnTelaInicial">Tela inicial</a>
+            <a href="login.html" class="btnSair" id="btnSair">Sair</a>
+        </div>
+
+    </header>
+
+    <section class="apresentacaoChamadas">
+        <h1>Gestão de manifestações</h1>
+        <p>Acompanhe, filtre e analise os registros enviados pelo canal.</p>
+    </section>
+
+    <main class="conteudoChamadas">
+        <section class="resumoChamadas" aria-label="Resumo das manifestações">
+            <article class="cartaoResumo">
+                <div class="iconeResumo">▤</div>
+                    <div>
+                        <span>Todas</span>
+                        <strong id="totalTodas">0</strong>
+                    </div>
+            </article>
+            <article class="cartaoResumo">
+                <div class="iconeResumo">!</div>
+                <div>
+                    <span>Reclamações</span>
+                    <strong id="totalReclamacoes">0</strong>
+                </div>
+            </article>
+
+            <article class="cartaoResumo denuncias">
+                <div class="iconeResumo">⚠</div>
+                <div>
+                    <span>Denúncias</span>
+                    <strong id="totalDenuncias">0</strong>
+                </div>
+            </article>
+
+            <article class="cartaoResumo">
+                <div class="iconeResumo">✎</div>
+                <div>
+                    <span>Críticas</span>
+                    <strong id="totalCriticas">0</strong>
+                </div>
+            </article>
+
+        </section>
+
+        <section class="painelRegistros">
+
+            <div class="ferramentasChamadas">
+                <div class="campoPesquisa">
+                    <span>⌕</span>
+                    <input type="search" id="pesquisaChamadas" placeholder="Pesquisar por protocolo ou assunto" aria-label="Pesquisar manifestações">
+                </div>
+
+                <div class="filtrosChamadas" aria-label="Filtrar manifestações">
+                    <button type="button" class="btnFiltro ativo" data-tipo="Todas"> Todas </button>
+                    <button type="button" class="btnFiltro" data-tipo="Reclamação">Reclamações </button>
+                    <button type="button" class="btnFiltro" data-tipo="Denúncia"> Denúncias </button>
+                    <button type="button" class="btnFiltro" data-tipo="Crítica"> Críticas </button>
+                </div>
+            </div>
+
+            <div class="tabelaResponsiva">
+                <table class="tabelaChamadas" id="tabelaChamadas">
+                    <thead>
+                        <tr>
+                            <th>Protocolo</th>
+                            <th>Tipo</th>
+                            <th>Assunto</th>
+                            <th>Data</th>
+                            <th>Anônimo</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="corpoTabela"></tbody>
+                </table>
+            </div>
+
+            <div class="estadoVazio" id="estadoVazio">
+                Nenhuma manifestação corresponde à pesquisa ou ao filtro escolhido.
+            </div>
+
+            <div class="rodapeTabela">
+                <span class="textoRegistros" id="textoRegistros"></span>
+                <div class="paginacao" id="paginacao"></div>
+            </div>
+
+        </section>
+
+    </main>
+
+
+<div
+    class="fundoModal"
+    id="fundoModal"
+    aria-hidden="true"
+>
+    <div
+        class="modalDetalhes"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tituloModal"
+    >
+        <div class="topoModal">
+            <h2 id="tituloModal">
+                Detalhes da manifestação
+            </h2>
+
+            <button
+                type="button"
+                class="fecharModal"
+                id="fecharModal"
+                aria-label="Fechar detalhes"
+            >
+                ×
+            </button>
+        </div>
+
+        <div class="conteudoModal">
+
+            <div class="resumoModal">
+
+                <div class="informacaoModal">
+                    <small>Protocolo</small>
+                    <strong id="modalProtocolo"></strong>
+                </div>
+
+                <div class="informacaoModal">
+                    <small>Tipo</small>
+                    <strong id="modalTipo"></strong>
+                </div>
+
+                <div class="informacaoModal">
+                    <small>Data</small>
+                    <strong id="modalData"></strong>
+                </div>
+
+                <div class="informacaoModal">
+                    <small>Setor</small>
+                    <strong id="modalSetor"></strong>
+                </div>
+
+                <div class="informacaoModal">
+                    <small>Autor</small>
+                    <strong id="modalAutor"></strong>
+                </div>
+
+                <div class="informacaoModal">
+                    <small>Anônimo</small>
+                    <strong id="modalAnonimo"></strong>
+                </div>
+
+            </div>
+
+            <div class="blocoModal">
+                <small>Assunto</small>
+                <p id="modalAssunto"></p>
+            </div>
+
+            <div class="blocoModal">
+                <small>Descrição</small>
+                <p id="modalDescricao"></p>
+            </div>
+
+            <div class="blocoModal">
+                <small>Informações complementares</small>
+                <p id="modalComplemento"></p>
+            </div>
+
+            <div class="blocoModal">
+                <small>Anexo</small>
+                <p id="modalAnexo"></p>
+            </div>
+
+            <div class="acoesModal">
+                <button
+                    type="button"
+                    class="btnFecharDetalhes"
+                    id="btnFecharDetalhes"
+                >
+                    Fechar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+    <footer> <p>© 2026 Lobios</p> <span>Painel Administrativo</span> </footer>
+    <div class="fundoModal" id="fundoModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+        <section class="modalDetalhes">
+            <header class="topoModal">
+                <h2 id="tituloModal">Detalhes da manifestação</h2>
+                <button type="button" class="fecharModal" id="fecharModal" aria-label="Fechar detalhes"> × </button>
+            </header>
+
+            <div class="conteudoModal">
+                <div class="resumoModal">
+                    <div class="informacaoModal">
+                        <small>Protocolo</small>
+                        <strong id="modalProtocolo"></strong>
+                    </div>
+
+                    <div class="informacaoModal">
+                        <small>Tipo</small>
+                        <strong id="modalTipo"></strong>
+                    </div>
+
+                    <div class="informacaoModal">
+                        <small>Data</small>
+                        <strong id="modalData"></strong>
+                    </div>
+
+                    <div class="informacaoModal">
+                        <small>Setor</small>
+                        <strong id="modalSetor"></strong>
+                    </div>
+
+                    <div class="informacaoModal">
+                        <small>Enviado por</small>
+                        <strong id="modalAutor"></strong>
+                    </div>
+
+                    <div class="informacaoModal">
+                        <small>Anônimo</small>
+                        <strong id="modalAnonimo"></strong>
+                    </div>
+                </div>
+
+                <div class="blocoModal">
+                    <small>Assunto</small>
+                    <p id="modalAssunto"></p>
+                </div>
+
+                <div class="blocoModal">
+                    <small>Descrição</small>
+                    <p id="modalDescricao"></p>
+                </div>
+
+                <div class="blocoModal">
+                    <small>Informações adicionais</small>
+                    <p id="modalComplemento"></p>
+                </div>
+
+                <div class="blocoModal">
+                    <small>Anexo</small>
+                    <p id="modalAnexo"></p>
+                </div>
+
+                <div class="acoesModal">
+                    <button type="button" class="btnFecharDetalhes" id="btnFecharDetalhes"> Fechar</button>
+                </div>
+
+            </div>
+
+        </section>
+    </div>
+
+    <script src="javaScript/chamadas.js"></script>
+</body>
+</html>

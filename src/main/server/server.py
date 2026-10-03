@@ -13,10 +13,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# ==========================================
-# CONFIGURAÇÃO DO BANCO DE DADOS (Supabase / PostgreSQL)
-# ==========================================
-SQLALCHEMY_DATABASE_URL= "postgresql://postgres.ocdyqvuufmgkcnbtopbn:lobios2026eniac@aws-0-us-east-1.pooler.supabase.com:6543/postgres"
+SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:@localhost:3306/canal_anonimo"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -32,7 +29,7 @@ def get_db():
     finally:
         db.close()
 
-from src.main.routes.user_routes import users_routes
+from src.main.routes.user_routes import canal_routes
 
-app.include_router(users_routes)
+app.include_router(canal_routes)
 
